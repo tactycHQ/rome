@@ -75,7 +75,7 @@ def denormalize(norm_input,mean,std):
     denorm=norm_input*std+mean
     return denorm
 
-def createInputs(features,targets,dates,window_size=60,window_shift=1,predict_delay=1,test_samples=61):
+def createInputs(features,targets,dates,window_size=60,window_shift=1,predict_delay=1,test_samples=121):
     #window_size = number of days in lookback window. Also same as prediction window
     #window_shift = how many days to shift between each sample
     #predict_delay = how many days in the future to start prediction
@@ -188,12 +188,6 @@ def plotPerformance(history,y_test,y_pred,y_dates_test,targets_std,window_size,p
 
     print("y_pred Shape is ", y_pred.shape)
 
-    # y_pred_timed = y_pred_timed.flatten()
-    # y_pred_timed = y_pred[::predict_intervals]
-    # y_pred_timed[:,30:,:]=np.NaN
-    # print("y_pred_timed Shape is ", y_pred_timed.shape)
-    # print("y_pred_timed Shape is ", y_pred_timed.shape)
-
     fig, axs =plt.subplots(2,1)
 
     axs[0].plot(range(1, len(loss) + 1), loss, 'bo', label='Training loss')
@@ -203,10 +197,10 @@ def plotPerformance(history,y_test,y_pred,y_dates_test,targets_std,window_size,p
 
     axs[1].plot(y_dates_timed,y_test_timed, label='Actual Prices')
 
-    for p in range(0,len(y_pred)-window_size):
+    for p in range(0,len(y_pred),window_size):
+        print(p)
         y_pred_timed=y_pred[p,:,:].flatten()
-        y_pred_timed = np.lib.pad(y_pred_timed,(p,len(y_pred)-window_size-p), 'constant', constant_values=np.NAN)
-        print(y_pred_timed.shape)
+        y_pred_timed = np.lib.pad(y_pred_timed,(p,len(y_dates_timed)-p-window_size), 'constant', constant_values=np.NAN)
         axs[1].plot(y_dates_timed, y_pred_timed,label='Predicted Prices')
 
     axs[1].set_title('Actuals vs Predicted')
