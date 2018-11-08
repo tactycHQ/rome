@@ -108,3 +108,7 @@ venv.bak/
 .idea/
 /GE.csv
 /HistoricalQuotes.csv
+/out.csv
+history.json
+out.csv
+
