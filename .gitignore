@@ -113,3 +113,5 @@ history.json
 out.csv
 
 /history.json
+/AAPL.csv
+!/AAPL.csv
