@@ -112,3 +112,4 @@ venv.bak/
 history.json
 out.csv
 
+/history.json
