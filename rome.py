@@ -1,3 +1,6 @@
+#Author: Anubhav Srivastava
+#License: MIT License
+
 from iexfinance import get_historical_data
 import datetime as dt
 import pandas as pd
