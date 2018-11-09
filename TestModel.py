@@ -13,7 +13,7 @@ def main():
     d=DataLoader(ticker)
     d.loadData()
     d.prepData()
-    window_size=2
+    window_size=1
     window_shift=1
     start_index=d.getIndex('11/10/2017')
     end_index=d.getIndex('11/7/2018')
@@ -108,7 +108,7 @@ def plotTestPerformance(y_pred,y_actuals,y_dates,history,targets_std,window_size
         axs[1].plot(y_dates, y_pred_timed, label='Predicted Prices')
 
     axs[1].set_title('Actuals vs Predicted')
-    # axs[1].legend(loc=(1.04,0))
+    axs[1].legend(loc=(1.04,0))
     axs[1].fmt_xdata = mdates.DateFormatter('%m-%d-%Y')
     fig.autofmt_xdate()
     plt.show()

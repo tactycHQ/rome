@@ -12,7 +12,7 @@ def main():
     d=DataLoader(ticker)
     d.loadData()
     d.prepData()
-    window_size=2
+    window_size=1
     window_shift=1
     start_index=d.getIndex('3/10/2009')
     end_index=d.getIndex('11/10/2015')
