@@ -146,6 +146,12 @@ def predict_model (model,x_test):
     y_pred=model.predict(x_test)
     return y_pred
 
+def modelSave (model,history):
+
+    model.save('rome.h5')
+    history_dict=history
+    with open('history.json','w') as f:
+        json.dump(history_dict,f)
 
 def modelLoad (model_filename='rome.h5',hist_filename='history.h5'):
 
