@@ -34,7 +34,7 @@ class DataLoader():
         self.stock_data = pd.read_csv(self.fname)
         print("------Loaded Raw Data-------")
 
-    def PrepData(self):
+    def prepData(self):
 
         self.targets = self.stock_data['close'].values.reshape(-1, 1)
         self.dates = self.stock_data['date'].values.reshape(-1, 1)
