@@ -32,6 +32,7 @@ class DataLoader():
 
     def loadData(self):
         self.stock_data = pd.read_csv(self.fname)
+        self.stock_data = self.stock_data.iloc[::-1]
         print("------Loaded Raw Data-------")
 
     def prepData(self):
@@ -55,6 +56,10 @@ class DataLoader():
 
     def denormalize(self,norm,mean,std):
         denorm = norm * std + mean
+
+    def getIndex(self, date):
+        i=np.where(self.dates==date)[0]
+        return i
 
 
 
