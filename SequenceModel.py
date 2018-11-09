@@ -7,9 +7,6 @@ import pandas as pd
 import numpy as np
 from keras.models import Sequential, load_model, save_model
 from keras import layers
-import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
-import matplotlib.dates as mdates
 import json
 
 
@@ -44,16 +41,4 @@ class SequenceModel():
             self.history=json.load(f)
 
 
-    def plotPerformance(self,targets_std):
-        loss = self.history['loss']
-        val_loss = self.history['val_loss']
-        print('Training loss (Denormalized)', loss[-1] * targets_std)
-        print('Validation loss (Denormalized)', val_loss[-1]*targets_std)
 
-        fig, axs =plt.subplots()
-        axs.plot(range(1, len(loss) + 1), loss, 'bo', label='Training loss')
-        axs.plot(range(1, len(loss) + 1), val_loss, 'b', label='Validation loss')
-        axs.set_title('Training and validation loss')
-        axs.legend()
-        fig.autofmt_xdate()
-        plt.show()

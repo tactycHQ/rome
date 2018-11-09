@@ -56,6 +56,7 @@ class DataLoader():
 
     def denormalize(self,norm,mean,std):
         denorm = norm * std + mean
+        return denorm
 
     def getIndex(self, date):
         i=np.where(self.dates==date)[0][0]

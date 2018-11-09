@@ -25,7 +25,7 @@ def main():
     # aapl_model.build_model(x_train,y_train)
     # aapl_model.modelSave('AAPL.h5','AAPL_history.json')
     aapl_model.modelLoad('AAPL.h5','AAPL_history.json')
-    aapl_model.plotPerformance(d.targets_std)
+    plotPerformance(aapl_model, aapl_model.history, d.targets_std)
 
 
 def createInputs(features, targets, dates, window_size, window_shift,start_index,end_index):
@@ -52,6 +52,20 @@ def createInputs(features, targets, dates, window_size, window_shift,start_index
     print("y_train Shape is ", y_train.shape)
     print("y_dates_train Shape is ", dates_train.shape)
     return x_train, y_train, dates_train
+
+def plotPerformance(model,history,targets_std):
+    loss = history['loss']
+    val_loss = history['val_loss']
+    print('Training loss (Denormalized)', loss[-1] * targets_std)
+    print('Validation loss (Denormalized)', val_loss[-1]*targets_std)
+
+    fig, axs =plt.subplots()
+    axs.plot(range(1, len(loss) + 1), loss, 'bo', label='Training loss')
+    axs.plot(range(1, len(loss) + 1), val_loss, 'b', label='Validation loss')
+    axs.set_title('Training and validation loss')
+    axs.legend()
+    fig.autofmt_xdate()
+    plt.show()
 
 
 if __name__ == '__main__':
