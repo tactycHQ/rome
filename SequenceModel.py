@@ -14,7 +14,7 @@ class SequenceModel():
 
     def __init__(self):
         self.model=Sequential()
-        self.history=None
+        self.history_dict=None
 
     def build_model(self,x_train,y_train,batch_size=32,epochs=20):
         timesteps, dim = x_train.shape[1],x_train.shape[2]
@@ -23,7 +23,8 @@ class SequenceModel():
         print(self.model.summary())
         self.model.compile(optimizer='adam',loss='mae')
         self.history=self.model.fit(x_train,y_train,batch_size=32,validation_split=0.2,verbose=1,epochs=epochs)
-        return self.model,self.history
+        self.history_dict=self.history.history
+        return self.model,self.history_dict
 
     def predict_model (self,x_test):
         y_pred=self.model.predict(x_test)
@@ -31,9 +32,8 @@ class SequenceModel():
 
     def modelSave (self,fname,hname):
         self.model.save(fname)
-        history_dict=self.history.history
         with open(hname,'w') as f:
-            json.dump(history_dict,f)
+            json.dump(self.history_dict,f)
 
     def modelLoad (self,model_filename,hist_filename):
         self.model=load_model(model_filename)

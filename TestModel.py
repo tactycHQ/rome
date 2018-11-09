@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 import matplotlib.dates as mdates
+import datetime as dt
 
 #Test Class
 
@@ -12,26 +13,30 @@ def main():
     d=DataLoader(ticker)
     d.loadData()
     d.prepData()
-    window_size=60
+    window_size=2
     window_shift=1
-    start_index=d.getIndex('11/11/2015')
+    start_index=d.getIndex('11/10/2017')
     end_index=d.getIndex('11/7/2018')
     x_test,y_test,dates_train=createInputs(d.features,
-                                             d.targets,
-                                             d.dates,
-                                             window_size,
-                                             window_shift,
-                                             start_index,
-                                             end_index)
+                                           d.targets,
+                                           d.dates,
+                                           window_size,
+                                           window_shift,
+                                           start_index,
+                                           end_index)
 
-    y_dates=d.dates[start_index:end_index]
-    y_actuals=d.targets[start_index:end_index]
+
 
     aapl_model=SequenceModel()
     aapl_model.modelLoad('AAPL.h5','AAPL_history.json')
     y_pred=aapl_model.predict_model(x_test)
+
     y_pred=d.denormalize(y_pred,d.targets_mean,d.targets_std)
-    plotTestPerformance(y_pred,y_actuals,y_dates, aapl_model.history,d.targets_std,window_size=window_size)
+    y_dates = d.dates[start_index:end_index]
+    y_actuals = d.targets[start_index:end_index]
+    y_actuals = d.denormalize(y_actuals, d.targets_mean, d.targets_std)
+
+    plotTestPerformance(y_pred,y_actuals,y_dates,aapl_model.history,d.targets_std,window_size=window_size)
 
 
 def createInputs(features, targets, dates, window_size, window_shift,start_index,end_index):
@@ -75,14 +80,6 @@ def plotPerformance(model,history,targets_std):
 
 def plotTestPerformance(y_pred,y_actuals,y_dates,history,targets_std,window_size):
 
-    y_dates = y_dates.flatten()
-
-    print(y_pred.shape)
-    print(y_actuals.shape)
-    print(y_dates.shape)
-
-
-
     loss = history['loss']
     val_loss = history['val_loss']
     print('Training loss (Denormalized)', loss[-1] * targets_std)
@@ -93,6 +90,12 @@ def plotTestPerformance(y_pred,y_actuals,y_dates,history,targets_std,window_size
     axs[0].plot(range(1, len(loss) + 1), val_loss, 'b', label='Validation loss')
     axs[0].set_title('Training and validation loss')
     axs[0].legend()
+
+    y_dates = y_dates.flatten()
+    # Convert y_dates timed to datetime format
+    for i in range (0,len(y_dates)):
+        y_dates[i] = dt.datetime.strptime(y_dates[i], '%m/%d/%Y')
+
 
     axs[1].plot(y_dates, y_actuals, label='Actual Prices')
     for p in range(0, len(y_pred), window_size):
@@ -105,7 +108,7 @@ def plotTestPerformance(y_pred,y_actuals,y_dates,history,targets_std,window_size
         axs[1].plot(y_dates, y_pred_timed, label='Predicted Prices')
 
     axs[1].set_title('Actuals vs Predicted')
-    axs[1].legend()
+    # axs[1].legend(loc=(1.04,0))
     axs[1].fmt_xdata = mdates.DateFormatter('%m-%d-%Y')
     fig.autofmt_xdate()
     plt.show()

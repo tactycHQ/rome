@@ -19,7 +19,7 @@ class DataLoader():
         self.features_std=None
         self.targets_mean = None
         self.targets_std = None
-        self.feature_set = ['close', 'volume']
+        self.feature_set = ['close','volume']
 
     def getData(self):
         start = dt.datetime(2013, 2, 9)
@@ -37,10 +37,12 @@ class DataLoader():
 
     def prepData(self):
 
+
         self.targets = self.stock_data['close'].values.reshape(-1, 1)
         self.dates = self.stock_data['date'].values.reshape(-1, 1)
         self.features = pd.DataFrame(self.stock_data, columns=self.feature_set).values
 
+        self.features, self.features_mean, self.featured_std = self.normalize(self.features)
         self.targets, self.targets_mean, self.targets_std = self.normalize(self.targets)
 
         print("Feature Shape is ", self.features.shape)

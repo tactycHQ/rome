@@ -1,6 +1,9 @@
 from DataLoader import DataLoader
 from SequenceModel import SequenceModel
 import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+import matplotlib.dates as mdates
 
 #Build Class
 
@@ -9,7 +12,7 @@ def main():
     d=DataLoader(ticker)
     d.loadData()
     d.prepData()
-    window_size=60
+    window_size=2
     window_shift=1
     start_index=d.getIndex('3/10/2009')
     end_index=d.getIndex('11/10/2015')
@@ -22,10 +25,11 @@ def main():
                                              start_index,
                                              end_index)
     aapl_model=SequenceModel()
-    # aapl_model.build_model(x_train,y_train)
-    # aapl_model.modelSave('AAPL.h5','AAPL_history.json')
-    aapl_model.modelLoad('AAPL.h5','AAPL_history.json')
-    plotPerformance(aapl_model, aapl_model.history, d.targets_std)
+    aapl_model.build_model(x_train,y_train)
+    aapl_model.modelSave('AAPL.h5','AAPL_history.json')
+    # aapl_model.modelLoad('AAPL.h5', 'AAPL_history.json')
+    plotPerformance(aapl_model,aapl_model.history_dict, d.targets_std)
+
 
 
 def createInputs(features, targets, dates, window_size, window_shift,start_index,end_index):
