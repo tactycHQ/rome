@@ -10,15 +10,15 @@ from BuildModel import _WINDOW_SHIFT,_WINDOWSIZE
 #Test Class
 
 def main():
-    ticker='AAPL'
+    ticker='test'
     d=DataLoader(ticker)
     d.loadData()
     d.prepData()
     window_size=_WINDOWSIZE
     window_shift=_WINDOW_SHIFT
-    start_index=d.getIndex('11/10/2017')
-    end_index=d.getIndex('11/7/2018')
-    x_test,y_test,dates_train=createInputs(d.features,
+    start_index=d.getIndex('11/10/2010')
+    end_index=d.getIndex('11/30/2017')
+    x_test,y_test,dates_test=createInputs(d.features,
                                            d.targets,
                                            d.dates,
                                            window_size,
@@ -27,14 +27,12 @@ def main():
                                            end_index)
 
 
-
     aapl_model=SequenceModel()
-    aapl_model.modelLoad('AAPL.h5','AAPL_history.json')
+    aapl_model.modelLoad("Data/"+ticker+'.h5',"Data/"+ticker+'_history.json')
     y_pred=aapl_model.predict_model(x_test)
 
-    y_pred=d.denormalize(y_pred,d.targets_mean,d.targets_std)
-    y_dates = d.dates[start_index:end_index]
-    y_actuals = d.targets[start_index:end_index]
+    y_dates = d.dates[start_index+1:end_index]
+    y_actuals = d.targets[start_index+1:end_index]
     y_actuals = d.denormalize(y_actuals, d.targets_mean, d.targets_std)
 
     plotTestPerformance(y_pred,y_actuals,y_dates,aapl_model.history,d.targets_std,window_size=window_size)
@@ -53,6 +51,8 @@ def createInputs(features, targets, dates, window_size, window_shift,start_index
     print("Start Index: ", start_index)
     print("End Index: ", end_index)
     for i in range(start_index, end_index, window_shift):
+        # print(i - window_size)
+        # print("x_test in for loop ",features[i - window_size:i, :])
         inputs.append(features[i - window_size:i, :])
         outputs.append(targets[i + 1:i + 1 + window_size, :])
         target_dates.append(dates[i + 1:i + 1 + window_size, :])

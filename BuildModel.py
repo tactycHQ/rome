@@ -11,11 +11,11 @@ _WINDOWSIZE=10
 _WINDOW_SHIFT=1
 
 def main():
-    ticker='AAPL'
+    ticker='test'
     d=DataLoader(ticker)
     d.loadData()
     d.prepData()
-    start_index=d.getIndex('3/10/2009')
+    start_index=d.getIndex('3/9/2009')
     end_index=d.getIndex('11/10/2015')
 
     x_train,y_train,dates_train=createInputs(d.features,
@@ -27,7 +27,7 @@ def main():
                                              end_index)
     aapl_model=SequenceModel()
     aapl_model.build_model(x_train,y_train)
-    aapl_model.modelSave('AAPL.h5','AAPL_history.json')
+    aapl_model.modelSave("Data/"+ticker+'.h5',"Data/"+ticker+'_history.json')
     # aapl_model.modelLoad('AAPL.h5', 'AAPL_history.json')
     plotPerformance(aapl_model,aapl_model.history_dict, d.targets_std)
 

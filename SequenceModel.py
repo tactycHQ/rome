@@ -19,8 +19,9 @@ class SequenceModel():
 
     def build_model(self,x_train,y_train,batch_size=32,epochs=_EPOCHS):
         timesteps, dim = x_train.shape[1],x_train.shape[2]
-        self.model.add(layers.GRU(32,return_sequences=True,input_shape=(timesteps,dim)))
-        self.model.add(layers.Dense(1))
+        self.model.add(layers.GRU(100,return_sequences=True,input_shape=(timesteps,dim)))
+        # self.model.add(layers.GRU(32, return_sequences=True, input_shape=(timesteps, dim)))
+        self.model.add(layers.TimeDistributed(layers.Dense(1)))
         print(self.model.summary())
         self.model.compile(optimizer='adam',loss='mae')
         self.history=self.model.fit(x_train,y_train,batch_size=32,validation_split=0.2,verbose=1,epochs=epochs)

@@ -11,7 +11,7 @@ class DataLoader():
     def __init__(self,ticker):
         self.ticker=ticker
         self.stock_data=None
-        self.fname = self.ticker + '.csv'
+        self.fname = "data/"+self.ticker + '.csv'
         self.features=None
         self.targets=None
         self.dates=None
@@ -54,6 +54,7 @@ class DataLoader():
         mean = denorm.mean(axis=0)
         std = denorm.std(axis=0)
         norm = (denorm - mean) / std
+
         return norm, mean, std
 
     def denormalize(self,norm,mean,std):
