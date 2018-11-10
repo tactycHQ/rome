@@ -51,8 +51,6 @@ def createInputs(features, targets, dates, window_size, window_shift,start_index
     print("Start Index: ", start_index)
     print("End Index: ", end_index)
     for i in range(start_index, end_index, window_shift):
-        # print(i - window_size)
-        # print("x_test in for loop ",features[i - window_size:i, :])
         inputs.append(features[i - window_size:i, :])
         outputs.append(targets[i + 1:i + 1 + window_size, :])
         target_dates.append(dates[i + 1:i + 1 + window_size, :])
