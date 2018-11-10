@@ -16,7 +16,7 @@ def main():
     d.prepData()
     window_size=_WINDOWSIZE
     window_shift=_WINDOW_SHIFT
-    start_index=d.getIndex('11/10/2009')
+    start_index=d.getIndex('11/10/2015')
     end_index=d.getIndex('11/30/2017')
     x_test,y_test,dates_test=createInputs(d.features,
                                            d.targets,
@@ -31,6 +31,7 @@ def main():
     aapl_model.modelLoad("Data/"+ticker+'.h5',"Data/"+ticker+'_history.json')
     y_pred=aapl_model.predict_model(x_test)
     y_pred = d.denormalize(y_pred, d.targets_mean, d.targets_std)
+    # print(y_pred.shape)
     y_dates = d.dates[start_index+1:end_index]
     y_actuals = d.targets[start_index+1:end_index]
     y_actuals = d.denormalize(y_actuals, d.targets_mean, d.targets_std)

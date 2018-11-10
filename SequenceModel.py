@@ -19,7 +19,7 @@ class SequenceModel():
 
     def build_model(self,x_train,y_train,batch_size=72,epochs=_EPOCHS):
         timesteps, dim = x_train.shape[1],x_train.shape[2]
-        self.model.add(layers.GRU(8,dropout=0.0,return_sequences=True,input_shape=(timesteps,dim)))
+        self.model.add(layers.GRU(8,dropout=0.0,input_shape=(timesteps,dim)))
         # self.model.add(layers.GRU(32, return_sequences=True, input_shape=(timesteps, dim)))
         self.model.add((layers.Dense(1)))
         print(self.model.summary())

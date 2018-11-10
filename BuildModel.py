@@ -7,7 +7,7 @@ import matplotlib.dates as mdates
 
 #Build Class
 
-_WINDOWSIZE=10
+_WINDOWSIZE=60
 _WINDOW_SHIFT=1
 
 def main():
