@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 import matplotlib.dates as mdates
 import datetime as dt
+from BuildModel import _WINDOW_SHIFT,_WINDOWSIZE
 
 #Test Class
 
@@ -13,8 +14,8 @@ def main():
     d=DataLoader(ticker)
     d.loadData()
     d.prepData()
-    window_size=1
-    window_shift=1
+    window_size=_WINDOWSIZE
+    window_shift=_WINDOW_SHIFT
     start_index=d.getIndex('11/10/2017')
     end_index=d.getIndex('11/7/2018')
     x_test,y_test,dates_train=createInputs(d.features,

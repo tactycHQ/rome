@@ -7,21 +7,22 @@ import matplotlib.dates as mdates
 
 #Build Class
 
+_WINDOWSIZE=10
+_WINDOW_SHIFT=1
+
 def main():
     ticker='AAPL'
     d=DataLoader(ticker)
     d.loadData()
     d.prepData()
-    window_size=1
-    window_shift=1
     start_index=d.getIndex('3/10/2009')
     end_index=d.getIndex('11/10/2015')
 
     x_train,y_train,dates_train=createInputs(d.features,
                                              d.targets,
                                              d.dates,
-                                             window_size,
-                                             window_shift,
+                                             _WINDOWSIZE,
+                                             _WINDOW_SHIFT,
                                              start_index,
                                              end_index)
     aapl_model=SequenceModel()

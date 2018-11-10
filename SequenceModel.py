@@ -9,6 +9,7 @@ from keras.models import Sequential, load_model, save_model
 from keras import layers
 import json
 
+_EPOCHS=20
 
 class SequenceModel():
 
@@ -16,7 +17,7 @@ class SequenceModel():
         self.model=Sequential()
         self.history_dict=None
 
-    def build_model(self,x_train,y_train,batch_size=32,epochs=20):
+    def build_model(self,x_train,y_train,batch_size=32,epochs=_EPOCHS):
         timesteps, dim = x_train.shape[1],x_train.shape[2]
         self.model.add(layers.GRU(32,return_sequences=True,input_shape=(timesteps,dim)))
         self.model.add(layers.Dense(1))
