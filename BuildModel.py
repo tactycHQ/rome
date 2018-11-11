@@ -1,3 +1,6 @@
+#Author: Anubhav Srivastava
+#License: MIT License
+
 from DataLoader import DataLoader
 from SequenceModel import SequenceModel
 import numpy as np
@@ -5,19 +8,35 @@ import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 import matplotlib.dates as mdates
 
-#Build Class
+#BuildModel script to create the data and run the model
+#Update ticker, windowsize and windowshift here
+#windowsize = length of frame. This is the X in "Model will lookback X number of days to predict X number of days"
+#windowshift = how much to shift each window. This is the Y in "Model will predict X number of days Y days from now."
 
+#Global Variables
 _WINDOWSIZE=60
 _WINDOW_SHIFT=1
+_TICKER='SPY'
+_START = '3/9/2009'
+_END = '11/10/2015'
+_EPOCHS=1
+_BATCHSIZE=72
 
 def main():
-    ticker='test'
+
+    '''
+    Main block to (1) Load data, (2) Create x_train, y_train and dates_train, (3) Run the model, (4) Save the model and (5) Plot training and validation performance
+    Loads data from TestModel class
+    '''
+
+    ticker=_TICKER
     d=DataLoader(ticker)
     d.loadData()
     d.prepData()
-    start_index=d.getIndex('3/9/2009')
-    end_index=d.getIndex('11/10/2015')
+    start_index=d.getIndex(_START)
+    end_index=d.getIndex(_END)
 
+    #Generates x_train, y_train and dates_train. We need dates_train in order to plot the x-axis later
     x_train,y_train,dates_train=createInputs(d.features,
                                              d.targets,
                                              d.dates,
@@ -25,16 +44,19 @@ def main():
                                              _WINDOW_SHIFT,
                                              start_index,
                                              end_index)
+    #Creates model instance and runs the model
     aapl_model=SequenceModel()
-    aapl_model.build_model(x_train,y_train)
+    epochs=_EPOCHS
+    aapl_model.build_model(x_train,y_train,batch_size=_BATCHSIZE,epochs=epochs)
     aapl_model.modelSave("Data/"+ticker+'.h5',"Data/"+ticker+'_history.json')
     # aapl_model.modelLoad('AAPL.h5', 'AAPL_history.json')
+
+    #Plot model
     plotPerformance(aapl_model,aapl_model.history_dict, d.targets_std)
 
 
-
 def createInputs(features, targets, dates, window_size, window_shift,start_index,end_index):
-    """"
+    """
     window_size = number of days in lookback window. Also same as prediction window
     window_shift = how many days to shift between each sample
     predict_delay = how many days in the future to start prediction
@@ -45,10 +67,17 @@ def createInputs(features, targets, dates, window_size, window_shift,start_index
     target_dates = []
     print("Start Index: ", start_index)
     print("End Index: ", end_index)
+
+    '''
+    #In this for loop, we generate each "frame". For a given i, we lookback window_size to create input 
+    #and look forward window_size to create output    
+    '''
+
     for i in range(start_index, end_index, window_shift):
         inputs.append(features[i - window_size:i, :])
         outputs.append(targets[i + 1:i + 1 + window_size, :])
         target_dates.append(dates[i + 1:i + 1 + window_size, :])
+
     x_train = np.array(inputs)
     y_train = np.array(outputs)
     dates_train = np.array(target_dates)
