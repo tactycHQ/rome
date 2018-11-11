@@ -1,4 +1,7 @@
+#Author: Anubhav Srivastava
+#License: MIT License
 
+#Helper Class to load and prepare data
 
 from iexfinance import get_historical_data
 import pandas as pd
@@ -19,7 +22,7 @@ class DataLoader():
         self.features_std=None
         self.targets_mean = None
         self.targets_std = None
-        self.feature_set = ['close','volume']
+        self.feature_set = ['close','volume'] #This defines which metrics to include in feature set
 
     def getData(self):
         start = dt.datetime(2013, 2, 9)
@@ -49,7 +52,7 @@ class DataLoader():
         print("Target Shape is ", self.targets.shape)
         print("Dates Shape is ", self.dates.shape)
 
-
+#Standard Scaler normalization
     def normalize(self,denorm):
         mean = denorm.mean(axis=0)
         std = denorm.std(axis=0)

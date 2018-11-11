@@ -9,6 +9,7 @@ from keras.models import Sequential, load_model, save_model
 from keras import layers
 import json
 
+#This class defines a Keras GRU model
 
 class SequenceModel():
 
@@ -16,6 +17,14 @@ class SequenceModel():
         self.model=Sequential()
         self.history_dict=None
 
+
+    '''
+    Build a Keras model with 1 GRU hidden layer and 1 Dense output layer
+    GRU layer has 8 units
+    GRU layer return_sequences set to TRUE to return full prediction sequence instead of just first prediction
+    Output shape of GRU = (None, 60, 8) 
+    Output shape of Dense = (None, 60, 1) i.e. 60 timesteps of 1 dimension in each output batch
+    '''
     def build_model(self,x_train,y_train,batch_size=72,epochs=20):
         timesteps, dim = x_train.shape[1],x_train.shape[2]
         self.model.add(layers.GRU(8,dropout=0.0,input_shape=(timesteps,dim),return_sequences=True))
