@@ -1,3 +1,6 @@
+#Author: Anubhav Srivastava
+#License: MIT License
+
 from DataLoader import DataLoader
 from SequenceModel import SequenceModel
 import numpy as np
@@ -8,6 +11,11 @@ import datetime as dt
 from BuildModel import _WINDOW_SHIFT,_WINDOWSIZE
 
 #Test Class
+#TESTSTART defines which date to start prediction from
+#TESTEND is last date of prediction
+
+_TESTSTART='11/10/2015'
+_TESTEND='11/30/2017'
 
 def main():
     ticker='test'
@@ -16,8 +24,8 @@ def main():
     d.prepData()
     window_size=_WINDOWSIZE
     window_shift=_WINDOW_SHIFT
-    start_index=d.getIndex('11/10/2015')
-    end_index=d.getIndex('11/30/2017')
+    start_index=d.getIndex(_TESTSTART)
+    end_index=d.getIndex(_TESTEND)
     x_test,y_test,dates_test=createInputs(d.features,
                                            d.targets,
                                            d.dates,

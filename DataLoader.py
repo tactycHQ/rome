@@ -1,13 +1,12 @@
 #Author: Anubhav Srivastava
 #License: MIT License
 
-#Helper Class to load and prepare data
-
 from iexfinance import get_historical_data
 import pandas as pd
 import numpy as np
 import datetime as dt
 
+#Helper Class to load and prepare data from csv file in the /data director
 
 class DataLoader():
 
@@ -24,6 +23,7 @@ class DataLoader():
         self.targets_std = None
         self.feature_set = ['close','volume'] #This defines which metrics to include in feature set
 
+#getData functional is optional. To download data from IEX API directly if CSV not available. IEX data is only 5 years though while Nasdaq data can go back 10 years
     def getData(self):
         start = dt.datetime(2013, 2, 9)
         end = dt.datetime(2017, 5, 9)
