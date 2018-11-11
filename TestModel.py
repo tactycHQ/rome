@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 import matplotlib.dates as mdates
 import datetime as dt
-from BuildModel import _WINDOW_SHIFT,_WINDOWSIZE
+from BuildModel import _WINDOW_SHIFT,_WINDOWSIZE,_TICKER
 
 #Test Class
 #TESTSTART defines which date to start prediction from
@@ -18,7 +18,7 @@ _TESTSTART='11/10/2015'
 _TESTEND='11/30/2017'
 
 def main():
-    ticker='test'
+    ticker=_TICKER
     d=DataLoader(ticker)
     d.loadData()
     d.prepData()
